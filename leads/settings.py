@@ -25,9 +25,6 @@ SECRET_KEY = "u!ulw$omea4%ch!_^2ka1sf0fu(*s6&38@9w1j_xf-xv2ay&3r"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
-
-
 # Application definition
 
 INSTALLED_APPS = (
@@ -65,6 +62,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'debug': True
         },
     },
 ]
@@ -74,13 +72,8 @@ WSGI_APPLICATION = 'leads.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+#
+DATABASES = {}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

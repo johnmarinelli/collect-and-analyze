@@ -1,10 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-urlpatterns [
-    # Examples:
-    # url(r'^$', 'leads.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
+urlpatterns = [
+    url(r'^', include('collect.urls')),
     url(r'^admin/', admin.site.urls),
 ]

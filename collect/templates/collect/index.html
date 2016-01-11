@@ -1,4 +1,10 @@
 {% if posts_list %}
-posts
+  {% for p in posts_list %}
+    <div>
+      <h2>{{ p.title }}</h2>
+      <p>{{ p.description }}</p>
+    </div>
+  {% endfor %}
+{% else %}
+<p>No posts available.</p>
 {% endif %}
-no posts

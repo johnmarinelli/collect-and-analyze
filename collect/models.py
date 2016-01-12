@@ -17,3 +17,8 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    @staticmethod
+    def get_cl_id(link):
+        return link.split('.html')[0].split('/')[-1]
+

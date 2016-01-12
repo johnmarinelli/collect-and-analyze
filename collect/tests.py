@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from .models import Post
+from .mailers.lead_mailer import LeadMailer
 
 import string, random, datetime, os
 
@@ -74,6 +75,15 @@ class PostViewTests(TestCase):
         old_post_count = len(Post.objects.all())
         attrs = create_random_attributes()
         attrs['token'] = os.getenv('COLLECT_AND_ANALYZE_API_TOKEN', '')
-        res = self.client.post('/create_post', attrs)
+        res = self.client.post('/collect/create_post', attrs)
         self.assertEqual(len(Post.objects.all()), old_post_count + 1)
 
+class LeadMailerTest(TestCase):
+    def sends_mail_with_valid_parameters(self):
+        """
+        Sends an email containing an expression of interest given proper params.
+        """
+        LeadMailer.send_mail('subj', 'body', 'test@email.com')
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, 'subj')
+        self.assertEqual(mail.outbox[0].body, 'body')

@@ -29,6 +29,7 @@ DEBUG = True
 
 INSTALLED_APPS = (
     'collect.apps.CollectConfig',
+    'analyze.apps.AnalyzeConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

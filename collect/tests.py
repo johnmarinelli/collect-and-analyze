@@ -181,3 +181,19 @@ class PostModelTest(TestCase):
         self.assertEqual(len(posts), 1)
         self.assertEqual(posts.first().title, post1.title)
 
+    def test_get_processed_posts_with_one_processed_post(self):
+        post1 = create_random_post()
+        post1.processed = True
+        post1.save()
+        posts = Post.get_processed_posts()
+        self.assertEqual(len(posts), 1)
+        self.assertEqual(posts.first().title, post1.title)
+
+    def test_get_processed_posts_with_varying_posts(self):
+        post1 = create_random_post()
+        post1.processed = True
+        post1.save()
+        post2 = create_random_post()
+        posts = Post.get_processed_posts()
+        self.assertEqual(len(posts), 1)
+        self.assertEqual(posts.first().title, post1.title)

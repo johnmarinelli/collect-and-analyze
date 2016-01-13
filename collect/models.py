@@ -37,6 +37,10 @@ class Post(models.Model):
     def get_recent_unprocessed_posts():
         return Post.get_recent_posts(processed = False)
 
+    @staticmethod
+    def get_processed_posts():
+        return Post.objects.filter(processed__exact = True)
+
     # TODO: refactor this into a separate module
     @staticmethod
     def get_cl_id(link):

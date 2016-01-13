@@ -36,7 +36,7 @@ class PostRetriever:
         process = subprocess.Popen(
             [
                 os.getenv('PATH_TO_PHANTOMJS', 'phantomjs'), 
-                os.path.join(settings.BASE_DIR, '..', 'collect', 'collector', 'get_email.js'), 
+                os.path.join(settings.ROOT_DIR, 'collect', 'collector', 'get_email.js'), 
                 post.link
             ], 
             stdout = subprocess.PIPE

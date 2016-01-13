@@ -1,10 +1,53 @@
 {% if posts_list %}
   {% for p in posts_list %}
-    <div>
+    <div class="post">
       <h2>{{ p.title }}</h2>
       <p>{{ p.description }}</p>
+
+      <form method="post">
+        {% csrf_token %}
+        {{ p.form }}
+        <button type="submit" name="process-post" formaction="{{ p.process_as_valid }}">Pass</button>
+        <button type="submit" name="process-post" formaction="{{ p.process_as_invalid }}">Fail</button>
+      </form>
     </div>
   {% endfor %}
 {% else %}
 <p>No posts available.</p>
 {% endif %}
+
+<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('button[type="submit"]').click(function(evt) {
+    var action = $(this).attr('formaction');
+    var form = $(this).parent();
+    var subj = $(form).children('input[name="subject"]').val(),
+      body = $(form).children('textarea[name="body"]').val(),
+      recipient = $(form).children('input[name="recipient"]').val(),
+      csrf = $(form).children('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+      url: action,
+      method: 'post',
+      data: {
+        subject: subj,
+        body: body,
+        recipient: recipient,
+        csrfmiddlewaretoken: csrf
+      },
+      success: function(data) {
+        console.log(data);
+      },
+      error: function(err) {
+        console.log(err);
+      },
+      dataType: 'json'
+    });
+
+    evt.preventDefault();
+  })
+});
+</script>
+
+

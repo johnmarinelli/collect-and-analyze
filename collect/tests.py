@@ -54,7 +54,7 @@ class PostViewTests(TestCase):
         post = create_random_post()
         res = self.client.get(reverse('collect:index'))
         self.assertContains(res, post.title)
-        self.assertQuerysetEqual(res.context['posts_list'], [repr(post)])
+        self.assertEqual(res.context['posts_list'][0]['title'], post.title)
 
     def test_index_view_with_recent_post_and_old_post(self):
         """
@@ -66,7 +66,7 @@ class PostViewTests(TestCase):
         post2.save()
         res = self.client.get(reverse('collect:index'))
         self.assertContains(res, post1.title)
-        self.assertQuerysetEqual(res.context['posts_list'], [repr(post1)])
+        self.assertEqual(res.context['posts_list'][0]['title'], post1.title)
 
     def test_create_post_with_valid_input(self):
         """
@@ -78,6 +78,12 @@ class PostViewTests(TestCase):
         res = self.client.post('/collect/create_post', attrs)
         self.assertEqual(len(Post.objects.all()), old_post_count + 1)
 
+    def test_process_uninteresting_post(self):
+        pass
+    
+    def test_process_interesting_post(self):
+        pass
+
 class LeadMailerTest(TestCase):
     def sends_mail_with_valid_parameters(self):
         """
@@ -87,3 +93,4 @@ class LeadMailerTest(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'subj')
         self.assertEqual(mail.outbox[0].body, 'body')
+        self.assertItemsEqual(mail.outbox[0].recipients(), ['test@email.com', 'john@johnmarinelli.me'])

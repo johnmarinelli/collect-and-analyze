@@ -3,6 +3,8 @@ from sklearn.naive_bayes import MultinomialNB
 
 class PostAnalyzer:
     """
-    Analyzes a post given its title, body, and compensation.
+    Analyzes a set of posts.
     """
-
+    def __init__(self):
+        #self.posts = Post.objects.
+        pass

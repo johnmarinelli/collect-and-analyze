@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views import generic
 from collect.models import Post
 from django.utils import timezone
+from .lead_analyzer.analyzer import PostAnalyzer
+from .lead_analyzer.predictor import PostPredictor
 
 import datetime
 
@@ -13,12 +15,8 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """ Return posts that have been processed """
-        return Post.objects.filter(
-                processed__exact = True,
-                created_at__gte = timezone.now() + datetime.timedelta(days = -60)
-                ).order_by('-created_at')
+        return Post.get_recent_processed_posts()
 
-# Create your models here.
 def analyze_posts(request):
     return
 

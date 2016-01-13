@@ -19,10 +19,7 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """ Return posts that haven't been processed. """
-        posts = Post.objects.filter(
-                processed__exact = False,
-                created_at__gte = timezone.now() + datetime.timedelta(days = -60)
-                ).order_by('-created_at').values()
+        posts = Post.get_recent_unprocessed_posts().values()
         for p in posts:
             p['form'] = EmailForm({'subject': 'SUBJECT_PLACEHOLDER', 'body': 'BODY_PLACEHOLDER', 'recipient': p['email'] })
             process_post_url = reverse('collect:process_post', kwargs = { 'post_id': p['id'] })
@@ -51,13 +48,13 @@ def create_post(request):
 def process_post(request, post_id):
     post = Post.objects.get(pk = post_id)
     valid = request.GET['valid']
-    post.passes = valid is "1"
+    post.passes = valid == u'1'
     post.processed = True
     post.save()
 
     #send_mail(request.POST['subj'], request.POST['body'], request.POST['recipient'])
 
-    return JsonResponse(model_to_dist(post))
+    return JsonResponse(model_to_dict(post))
 
 def send_mail(request):
     post_id = request.POST['post_id']

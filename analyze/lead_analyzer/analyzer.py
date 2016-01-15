@@ -24,27 +24,27 @@ class PostAnalyzer:
         self.training_target = map(lambda p: p.passes, self.posts)
 
         if pickle_loader.pickles_exist():
-            self.count_vectorizer = pickle_loader.load_pickle(COUNT_VECTORIZER_PICKLE_PATH)
-            self.tfidf_transformer = pickle_loader.load_pickle(TFIDF_TRANSFORMER_PICKLE_PATH)
-            self.classifier = pickle_loader.load_pickle(CLASSIFIER_PICKLE_PATH)
+            self.title_count_vectorizer = pickle_loader.load_pickle(TITLE_COUNT_VECTORIZER_PICKLE_PATH)
+            self.title_tfidf_transformer = pickle_loader.load_pickle(TITLE_TFIDF_TRANSFORMER_PICKLE_PATH)
+            self.title_classifier = pickle_loader.load_pickle(TITLE_CLASSIFIER_PICKLE_PATH)
         else:
             # todo: don't forget lemmatization
-            self.count_vectorizer = CountVectorizer()
-            self.tfidf_transformer = TfidfTransformer()
-            self.classifier = None
+            self.title_count_vectorizer = CountVectorizer()
+            self.title_tfidf_transformer = TfidfTransformer()
+            self.title_classifier = None
 
-    def initial_analyze(self):
+    def analyze(self):
         """
-        Call this when a new training example is added, or it's the first time analyzing data.
+        Call this when a new training example is added
         """
-        x_title_train_counts = self.count_vectorizer.fit_transform(self.title_training_content)
-        x_title_train_tfidf = self.tfidf_transformer.fit_transform(x_title_train_counts)
+        x_title_train_counts = self.title_count_vectorizer.fit_transform(self.title_training_content)
+        x_title_train_tfidf = self.title_tfidf_transformer.fit_transform(x_title_train_counts)
 
         # fit the model to our targets
-        title_clf = MultinomialNB().fit(x_title_train_tfidf, self.training_target)
+        self.title_classifier = self.title_classifier or MultinomialNB().fit(x_title_train_tfidf, self.title_training_target)
 
         # save models
         pickle_saver = PickleSaver()
-        pickle_saver.save_pickle(self.count_vectorizer, COUNT_VECTORIZER_PICKLE_PATH)
-        pickle_saver.save_pickle(self.tfidf_transformer, TFIDF_TRANSFORMER_PICKLE_PATH)
-        pickle_saver.save_pickle(self.tfidf_transformer, CLASSIFIER_PICKLE_PATH)
+        pickle_saver.save_pickle(self.title_count_vectorizer, TITLE_COUNT_VECTORIZER_PICKLE_PATH)
+        pickle_saver.save_pickle(self.title_tfidf_transformer, TITLE_TFIDF_TRANSFORMER_PICKLE_PATH)
+        pickle_saver.save_pickle(self.title_clf, TITLE_CLASSIFIER_PICKLE_PATH)

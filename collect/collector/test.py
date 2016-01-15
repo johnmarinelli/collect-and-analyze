@@ -13,4 +13,4 @@ printer = pprint.PrettyPrinter(indent = 4)
 
 #printer.pprint(pr.get_information_from_post({ 'link': link }))
 
-#pr.get_posts()
+pr.get_posts()

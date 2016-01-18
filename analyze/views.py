@@ -4,6 +4,7 @@ from collect.models import Post
 from django.utils import timezone
 from .lead_analyzer.analyzer import PostAnalyzer
 from .lead_analyzer.predictor import PostPredictor
+from .lead_analyzer.metrics import PostMetrics
 
 import datetime
 

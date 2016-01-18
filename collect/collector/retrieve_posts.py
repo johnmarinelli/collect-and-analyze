@@ -70,7 +70,7 @@ class PostRetriever:
             raise SystemError(err)
 
     def get_posts(self):
-        areas = ['orangecounty', 'phoenix', 'losangeles', 'sfbay', 'inlandempire']
+        areas = ['orangecounty', 'phoenix', 'losangeles', 'sfbay', 'inlandempire', 'seattle', 'washingtondc', 'chicago', 'boston', 'atlanta', 'portland', 'dallas', 'miami', 'orlando', 'lasvegas', 'philadelphia', 'houston']
         shuffle(areas)
 
         for area in areas:

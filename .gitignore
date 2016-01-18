@@ -1,5 +1,7 @@
 venv
 *.pyc
+*.npy
+*.pkl
 staticfiles
 collect/collector/get_email.js
 get_metrics.py

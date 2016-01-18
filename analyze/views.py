@@ -11,16 +11,20 @@ import datetime
 # Create your views here.
 
 class IndexView(generic.ListView):
+    """
+    Index for analyze will serve as a metrics viewer
+    """
     template_name = 'analyze/index.html'
     context_object_name = 'posts_list'
 
     def get_queryset(self):
-        """ Return posts that have been processed """
-        return Post.get_recent_processed_posts()
+        return PostMetrics().get_metrics()
 
 def analyze_posts(request):
     return
 
 def predict_post(request, post_id):
+    post_predictor = PostPredictor(saved_pickle_path = 'prod')
+    post_predictor.predict([Post.objects.get(pk = post_id)])
     return
 
